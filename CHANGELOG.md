@@ -1,5 +1,44 @@
 # Universe Engine Changelog.
 
+[Universe Engone 0.4.5](https://github.com/VideoBotYT/Universe-Engine/releases/tag/0.4.5)
+
+Bugfixes
+
+windowSize now doesn't have 2 arguments that did the same _previously the sizeX and sizeY did the same_
+windowSize now also has 2 extra functions _for the X and the Y sepreratly_ read [wiki](https://github.com/VideoBotYT/Universe-Engine/wik) for more information
+windowPos now also has 2 extra function _like widnowSize_  read [wiki](https://github.com/VideoBotYT/Universe-Engine/wik) for more information
+
+[Universe Engine 0.4.4](https://github.com/VideoBotYT/Universe-Engine/releases/tag/0.4.4)
+
+New features
+
+Fancy Menus (game option)
+Silly Bounce (game option *only effects when you have Fancy Menus on)
+New modifiers
+New lua functions (check [wiki](https://github.com/VideoBotYT/Universe-Engine/wiki) for it)
+
+[Universe Engine 0.3.4](https://github.com/VideoBotYT/Universe-Engine/releases/tag/0.3.4)
+
+Minor bugfix stuff
+
+Immediate restart is now implemented
+
+Some text are centered
+
+Fixed erect difficulty changing on pause menu so it doesnt crash anymore (creds to CharGoldenYT for the PR)
+
+Fixed WeekEditorState menu crash (creds to CharGoldenYT for the pr, I don't use the built in editor lol)
+
+2 New Hitsounds
+
+Changed some ClientPrefs stuff
+
+Removed window icon for fire in the hole hitsound. (I didn't have enough time to fix it.)
+
+2 New gameplay modifier! (it includes playback rate)
+
+Loading screen! (can disable)
+
 
 [Universe Engine 0.3.3](https://github.com/VideoBotYT/Universe-Engine/releases/tag/0.3.3)
 

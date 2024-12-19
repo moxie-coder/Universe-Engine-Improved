@@ -145,8 +145,14 @@ class SelectThing extends MusicBeatState
 					LoadingState.loadAndSwitchState(new PlayState());
 					FlxG.sound.music.volume = 0;
 				}
+				else if (ClientPrefs.fm)
+				{
+					MusicBeatState.switchState(new CoolMenuState());
+				}
 				else
+				{
 					MusicBeatState.switchState(new MainMenuState());
+				}
 			}
 			if (controls.ACCEPT)
 			{

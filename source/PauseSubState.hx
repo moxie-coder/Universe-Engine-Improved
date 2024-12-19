@@ -18,6 +18,7 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 
 using StringTools;
+
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -239,14 +240,14 @@ class PauseSubState extends MusicBeatSubstate
 				{
 					var name:String = PlayState.SONG.song;
 					var poop = Highscore.formatSong(name, curSelected);
-					if (isErect)
+					if (isErect) // Special thanks to CharGoldenYT on github for this PR
 					{
 						try
 						{
 							// Try to load it normally.
 							PlayState.SONG = Song.loadFromJson(poop, name);
 						}
-						catch(e:Dynamic)
+						catch (e:Dynamic)
 						{
 							/**
 							 * If it failed, it's likely an erect chart in the same folder as the normal charts.
@@ -371,7 +372,14 @@ class PauseSubState extends MusicBeatSubstate
 						WeekData.loadTheFirstEnabledMod();
 						if (PlayState.isStoryMode)
 						{
-							FlxG.switchState(new StoryMenuState());
+							if (ClientPrefs.fm)
+							{
+								FlxG.switchState(new CoolStoryState());
+							}
+							else
+							{
+								FlxG.switchState(new StoryMenuState());
+							}
 						}
 						else if (!PlayState.isStoryMode)
 						{
@@ -385,7 +393,14 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.seenCutscene = false;
 
 						WeekData.loadTheFirstEnabledMod();
-						FlxG.switchState(new MainMenuState());
+						if (ClientPrefs.fm)
+						{
+							MusicBeatState.switchState(new CoolMenuState());
+						}
+						else
+						{
+							MusicBeatState.switchState(new MainMenuState());
+						}
 						FlxG.sound.playMusic(Paths.music("freakyMenu-" + ClientPrefs.mmm));
 						PlayState.changedDifficulty = false;
 						PlayState.chartingMode = false;
@@ -511,7 +526,7 @@ class PauseSubState extends MusicBeatSubstate
 		if (skipTimeText == null || skipTimeTracker == null)
 			return;
 
-		//skipTimeText.x = skipTimeTracker.x + skipTimeTracker.width + 60;
+		// skipTimeText.x = skipTimeTracker.x + skipTimeTracker.width + 60;
 		skipTimeText.screenCenter(X);
 		skipTimeText.y = skipTimeTracker.y + 60;
 		skipTimeText.visible = (skipTimeTracker.alpha >= 1);
