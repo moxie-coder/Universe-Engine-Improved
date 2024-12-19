@@ -1,5 +1,5 @@
 REM This contains all required libraries for this project
-haxelib set hxCodec 2.5.1 --always
+haxelib install hxvlc
 haxelib install flixel 5.6.2
 haxelib install flixel-addons 3.2.3
 haxelib install flixel-ui 2.6.1

@@ -39,7 +39,7 @@ import lime.app.Application;
 import openfl.Assets;
 import flixel.util.FlxAxes;
 #if VIDEOS_ALLOWED
-import vlc.MP4Handler;
+import hxvlc.flixel.FlxVideo as MP4Handler;
 #end
 import flixel.addons.display.FlxBackdrop;
 
@@ -940,8 +940,18 @@ class TitleState extends MusicBeatState
 				{
 					#if VIDEOS_ALLOWED
 					case 1:
-						var video:MP4Handler = new MP4Handler();
-						video.playVideo("assets/videos/AACIntroUE.mp4");
+						final bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+						bg.scrollFactor.set();
+						//bg.cameras = [camHUD];
+						add(bg);
+						final vid = new MP4Handler();
+						vid.onEndReached.add(function(){
+							remove(bg);
+							vid.dispose();
+							//startAndEnd();
+						});
+						vid.load("assets/videos/AACIntroUE.mp4");
+						vid.play();
 
 						FlxG.sound.playMusic(Paths.music("freakyMenu-" + ClientPrefs.mmm), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
