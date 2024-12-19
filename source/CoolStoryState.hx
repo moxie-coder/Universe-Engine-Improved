@@ -75,14 +75,8 @@ class CoolStoryState extends MusicBeatState
 		txtWeekTitle.setFormat(Paths.font('funkin.ttf'), 32, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txtWeekTitle.screenCenter(X);
 
-		scoreText = new FlxText(FlxG.width * 0.7, 10, 2000, "SCORE: 49324858", 36);
+		scoreText = new FlxText(FlxG.width * 0.7, 10, 2000, "SCORE: 0", 36);
 		scoreText.setFormat(Paths.font('funkin.ttf'), 32);
-
-		/*var rankText:FlxText = new FlxText(0, 10);
-			rankText.text = 'RANK: GREAT';
-			rankText.setFormat(Paths.font(Paths.font('funkin.ttf')), 32);
-			rankText.size = scoreText.size;
-			rankText.screenCenter(X); */
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		bgSprite = new FlxSprite(0, FlxG.height / 2 + 1000);
@@ -185,12 +179,12 @@ class CoolStoryState extends MusicBeatState
 			weekCharacterThing.y += 70;
 		}
 
-		CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
+		Difficulty.resetList();
 		if (lastDifficultyName == '')
 		{
-			lastDifficultyName = CoolUtil.defaultDifficulty;
+			lastDifficultyName = Difficulty.getDefault();
 		}
-		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
+		curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(lastDifficultyName)));
 
 		sprDifficulty = new FlxSprite(0, leftArrow.y);
 		sprDifficulty.antialiasing = ClientPrefs.globalAntialiasing;
@@ -204,7 +198,6 @@ class CoolStoryState extends MusicBeatState
 		txtTracklist.alignment = CENTER;
 		txtTracklist.setFormat(Paths.font('funkin.ttf'), 32, 0xFFe55777, CENTER);
 		add(txtTracklist);
-		// add(rankText);
 		add(scoreText);
 		add(txtWeekTitle);
 
@@ -350,7 +343,7 @@ class CoolStoryState extends MusicBeatState
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
-			var diffic = CoolUtil.getDifficultyFilePath(curDifficulty);
+			var diffic = Difficulty.getFilePath(curDifficulty);
 			if (diffic == null)
 				diffic = '';
 
@@ -378,13 +371,13 @@ class CoolStoryState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = CoolUtil.difficulties.length - 1;
-		if (curDifficulty >= CoolUtil.difficulties.length)
+			curDifficulty = Difficulty.list.length-1;
+		if (curDifficulty >= Difficulty.list.length)
 			curDifficulty = 0;
 
 		WeekData.setDirectoryFromWeek(loadedWeeks[curWeek]);
 
-		var diff:String = CoolUtil.difficulties[curDifficulty];
+		var diff:String = Difficulty.getString(curDifficulty);
 		var newImage:FlxGraphic = Paths.image('menudifficulties/' + Paths.formatToSongPath(diff));
 		// trace(Paths.currentModDirectory + ', menudifficulties/' + Paths.formatToSongPath(diff));
 
@@ -456,45 +449,17 @@ class CoolStoryState extends MusicBeatState
 		}
 		PlayState.storyWeek = curWeek;
 
-		CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
-		var diffStr:String = WeekData.getCurrentWeek().difficulties;
-		if (diffStr != null)
-			diffStr = diffStr.trim(); // Fuck you HTML5
+		Difficulty.loadFromWeek();
 		difficultySelectors.visible = unlocked;
 
-		if (diffStr != null && diffStr.length > 0)
-		{
-			var diffs:Array<String> = diffStr.split(',');
-			var i:Int = diffs.length - 1;
-			while (i > 0)
-			{
-				if (diffs[i] != null)
-				{
-					diffs[i] = diffs[i].trim();
-					if (diffs[i].length < 1)
-						diffs.remove(diffs[i]);
-				}
-				--i;
-			}
-
-			if (diffs.length > 0 && diffs[0].length > 0)
-			{
-				CoolUtil.difficulties = diffs;
-			}
-		}
-
-		if (CoolUtil.difficulties.contains(CoolUtil.defaultDifficulty))
-		{
-			curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(CoolUtil.defaultDifficulty)));
-		}
+		if(Difficulty.list.contains(Difficulty.getDefault()))
+			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
 		else
-		{
 			curDifficulty = 0;
-		}
 
-		var newPos:Int = CoolUtil.difficulties.indexOf(lastDifficultyName);
-		// trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
-		if (newPos > -1)
+		var newPos:Int = Difficulty.list.indexOf(lastDifficultyName);
+		//trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
+		if(newPos > -1)
 		{
 			curDifficulty = newPos;
 		}
